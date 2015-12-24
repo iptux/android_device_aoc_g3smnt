@@ -46,7 +46,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     persist.sys.usb.config=mtp,adb
 
 # Inherit tablet dalvik settings
-$(call inherit-product, frameworks/native/build/tablet-10in-hdpi-2048-dalvik-heap.mk)
+$(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
 
 # Device Naming
 PRODUCT_NAME := full_g3smnt
