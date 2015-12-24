@@ -50,6 +50,6 @@ $(call inherit-product, frameworks/native/build/tablet-10in-hdpi-2048-dalvik-hea
 
 # Device Naming
 PRODUCT_NAME := full_g3smnt
-PRODUCT_DEVICE := G3SMNT
+PRODUCT_DEVICE := g3smnt
 PRODUCT_BRAND := AOC
 PRODUCT_MODEL := G3SMNT
