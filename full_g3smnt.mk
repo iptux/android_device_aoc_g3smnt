@@ -15,5 +15,5 @@
 # Inherit full-base
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 
-# Inherit from tf700t device
+# Inherit from g3smnt device
 $(call inherit-product, device/aoc/g3smnt/device_g3smnt.mk)

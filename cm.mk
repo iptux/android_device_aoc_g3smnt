@@ -5,7 +5,7 @@ TARGET_SCREEN_WIDTH := 1920
 # Inherit some common cyanogenmod stuff.
 $(call inherit-product, vendor/cm/config/common_full_tablet_wifionly.mk)
 
-# Inherit device configuration for tf700t.
+# Inherit device configuration for g3smnt.
 $(call inherit-product, device/aoc/g3smnt/full_g3smnt.mk)
 
 #

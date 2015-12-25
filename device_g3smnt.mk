@@ -15,7 +15,7 @@
 # Inherit common language setup
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
-# Inherit tf700t vendor setup
+# Inherit g3smnt vendor setup
 $(call inherit-product-if-exists, vendor/aoc/g3smnt/g3smnt-vendor.mk)
 
 # Path to overlay files
