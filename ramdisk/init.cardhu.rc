@@ -1,0 +1,362 @@
+import init.cardhu.usb.rc
+
+on early-init
+    mount debugfs debugfs /sys/kernel/debug
+
+on init
+    mkdir /mnt/shell/emulated 0700 shell shell
+    mkdir /storage/emulated 0555 root root
+
+    export EXTERNAL_STORAGE /storage/emulated/legacy
+    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
+    export EMULATED_STORAGE_TARGET /storage/emulated
+
+    # Support legacy paths
+    symlink /storage/emulated/legacy /sdcard
+    symlink /storage/emulated/legacy /mnt/sdcard
+    symlink /storage/emulated/legacy /storage/sdcard0
+    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+
+    # Enable secondary storage
+    export SECONDARY_STORAGE /storage/sdcard1
+
+    # make the pathes for the external media mounts
+    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+    mkdir /mnt/media_rw/usbdisk0 0700 media_rw media_rw
+    mkdir /mnt/media_rw/usbdisk1 0700 media_rw media_rw
+    mkdir /storage/sdcard1 0700 root root
+    mkdir /storage/usbdisk0 0700 root root
+    mkdir /storage/usbdisk1 0700 root root
+
+on fs
+    setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
+    setprop ro.crypto.umount_sd false
+    # PLEASE DO NOT REMOVE NVSI SYMLINK! IF CHANGES ARE NEEDED PLEASE ENSURE THAT NVSI SYMLINK IS ALWAYS CREATED.
+    # Mount system to allow NVSI symlink
+    mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/APP /system rw
+    # Create NVSI filter symlink
+    symlink /data/data/com.nvidia.NvCPLSvc/files/com.nvidia.nvsiutilv1.xml /system/etc/permissions/com.nvidia.nvsiutilv1.xml
+    mount_all /fstab.cardhu
+
+on post-fs-data
+    mkdir /data/misc/wifi 0770 wifi wifi
+    mkdir /data/misc/wifi/sockets 0770 wifi wifi
+    mkdir /data/misc/dhcp 0770 dhcp dhcp
+    mkdir /data/nvcam 0700 media camera
+    chown dhcp dhcp /data/misc/dhcp
+
+    mkdir /data/misc/wminput 0776 system system
+
+    # we will remap this as /mnt/sdcard with the sdcard fuse tool
+    mkdir /data/media 0770 media_rw media_rw
+    chown media_rw media_rw /data/media
+
+    # Set indication (checked by vold) that we have finished this action
+    setprop vold.post_fs_data_done 1
+
+on boot
+
+# scaler
+	# scaler policy device
+	chmod 0666 /dev/Misc_Scalar_Policy
+	chmod 0666 /dev/ttyHS1
+
+# bluetooth
+    # change back to bluetooth from system
+    chown bluetooth net_bt_stack /data/misc/bluetooth
+
+    # UART device
+    chmod 0660 /dev/ttyHS2
+    chown bluetooth net_bt_stack /dev/ttyHS2
+
+    # power up/down interface
+    chmod 0660 /sys/class/rfkill/rfkill0/state
+    chmod 0660 /sys/class/rfkill/rfkill0/type
+    write /sys/class/rfkill/rfkill0/state 0
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
+
+    # bluetooth MAC address programming
+    chown bluetooth net_bt_stack ro.bt.bdaddr_path
+    chown bluetooth net_bt_stack /system/etc/bluetooth
+    chown bluetooth net_bt_stack /data/misc/bluetooth
+    setprop ro.bt.bdaddr_path "/data/misc/bluetooth/bdaddr"
+
+# nvdps
+    chown system system /sys/class/graphics/fb0/device/nvdps
+
+
+# didim
+    chown system system /sys/class/graphics/fb0/device/smartdimmer/enable
+    chown system system /sys/class/graphics/fb0/device/smartdimmer/aggressiveness
+
+# power
+    chown system system /sys/kernel/tegra_cap/core_cap_level
+    chown system system /sys/kernel/tegra_cap/core_cap_state
+    chown system system /sys/module/cpu_tegra/parameters/cpu_user_cap
+    chown system system /sys/module/cpu_tegra3/parameters/mp_overhead
+
+# Sensor
+    chown system system /sys/devices/platform/tegra-i2c.2/i2c-2/2-000f/enable
+    chown system system /sys/devices/platform/tegra-i2c.2/i2c-2/2-000f/delay
+    chmod 0660 /sys/devices/platform/tegra-i2c.2/i2c-2/2-000f/enable
+    chmod 0660 /sys/devices/platform/tegra-i2c.2/i2c-2/2-000f/delay
+
+# Power management settings
+    chown system system /sys/module/cpu_tegra3/parameters/no_lp
+    write /sys/module/cpu_tegra3/parameters/no_lp 0
+    #write /sys/module/tegra3_emc/parameters/emc_enable 0
+    #write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 1000000
+
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor conservative
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor conservative
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor conservative
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor conservative
+
+    write /sys/devices/system/cpu/cpufreq/conservative/up_threshold 95
+    write /sys/devices/system/cpu/cpufreq/conservative/down_threshold 75
+    write /sys/devices/system/cpu/cpufreq/conservative/freq_step 3
+
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpufreq/interactive/boost_factor 2
+    write /sys/devices/system/cpu/cpufreq/interactive/sustain_load 80
+    write /sys/module/cpu_tegra3/parameters/auto_hotplug 1
+    #write /sys/module/cpuidle_t3/parameters/lp2_0_in_idle 0
+    write /sys/module/cpuidle/parameters/lp2_in_idle 1
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/max_boost
+
+# Default Read Ahead value for sdcards
+    write /sys/block/mmcblk0/bdi/read_ahead_kb   4096
+    write /sys/block/mmcblk1/bdi/read_ahead_kb   4096
+    write /sys/block/mmcblk0/queue/read_ahead_kb 4096
+    write /sys/block/mmcblk1/queue/read_ahead_kb 4096
+
+# Wiimote connect status
+    write /data/misc/wminput/connected 0
+    chmod 0666 /data/misc/wminput/connected
+
+# Load WiFi driver
+    insmod /system/lib/modules/cfg80211.ko
+
+# BB mapping symbolic name to the logging ttyACM port
+    symlink /dev/ttyACM2 /dev/log_modem
+
+# Enable USB Remote Wakeup on USB2 for modems
+    write /sys/bus/usb/devices/1-1/power/wakeup enabled
+
+# USB On The Go - Host Mode
+    chown system system /sys/devices/platform/tegra-otg/enable_host
+
+service dhcpcd_wlan0 /system/bin/dhcpcd -aABKL
+    class main
+    disabled
+    oneshot
+
+service dhcpcd_p2p /system/bin/dhcpcd -aABKL
+    class main
+    disabled
+    oneshot
+
+service dhcpcd_eth0 /system/bin/dhcpcd -ABKL -f/system/etc/dhcpcd/dhcpcd.conf
+     class main
+     disabled
+     oneshot
+
+service dhcpcd_bnep0 /system/bin/dhcpcd -ABKL
+    class main
+    disabled
+    oneshot
+
+service iprenew_wlan0 /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
+
+service iprenew_p2p /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
+
+service iprenew_eth0 /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
+
+# create virtual SD card at /mnt/sdcard, based on the /data/media directory
+# deamon will drop to user/group system/media_rw after initializing
+# underlying files in /data/media wil be created with user and group media_rw (1023)
+service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
+    class late_start
+
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
+    class late_start
+    disabled
+
+service fuse_usbdisk0 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usbdisk0 /storage/usbdisk0
+    class late_start
+    disabled
+
+service fuse_usbdisk1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usbdisk1 /storage/usbdisk1
+    class late_start
+    disabled
+
+# bugreport is triggered by the VOLUME-DOWN and VOLUME-UP keys
+service bugreport /system/bin/dumpstate -d -p -B \
+        -o /data/data/com.android.shell/files/bugreports/bugreport \
+        -b /system/media/audio/ui/Dock.ogg -e /system/media/audio/ui/Undock.ogg
+    class main
+    disabled
+    oneshot
+    keycodes 115 114
+
+# btmacwriter - to create unique BD address
+service btmacwriter /system/bin/btmacwriter
+    class main
+    user bluetooth
+    group bluetooth net_bt_admin
+    oneshot
+
+# wifiloader - set the wifi commchip_id accordingly
+service wifiloader /system/bin/wifi_loader.sh
+    class main
+    user root
+    group root
+    oneshot
+    disabled
+
+# Prepare TF service
+service tf_daemon /system/bin/tf_daemon -storageDir /data/tf -d
+    disabled
+    class main
+    user root
+    group shell
+    oneshot
+
+# Create data directory and start service
+on property:tf.enable=y
+    mkdir /data/tf
+    start tf_daemon
+
+# stop ril-daemon if this is a wifi-only device
+on property:ro.carrier=wifi-only
+    stop ril-daemon
+
+# Enable NvCpuD, and set it to never poll config again
+on boot
+    setprop nvcpud.enabled true
+    setprop nvcpud.config_refresh_ms -1
+
+service nvcpud /system/bin/nvcpud
+    class main
+    user root
+    group root
+
+# test mode for RIL: Should probably be removed from production phones
+service ril-daemon-test /system/bin/rild
+    socket rild-testmode stream 666 root radio
+    socket rild-debug stream 660 radio system
+    user root
+    group radio cache inet misc audio sdcard_rw sdcard_r
+    disabled
+
+# Start Icera switcher daemon
+service icera-switcher /system/bin/icera-switcherd
+    class main
+    user root
+    group log
+
+
+# create filesystems if necessary
+service setup_fs /system/bin/setup_fs \
+        /dev/block/platform/sdhci-tegra.3/by-name/UDA \
+        /dev/block/platform/sdhci-tegra.3/by-name/CAC
+    class core
+    user root
+    group root
+    oneshot
+
+on property:ril.testmode=1
+    stop ril-daemon
+    start ril-daemon-test
+
+on property:ril.testmode=0
+    stop ril-daemon-test
+    start ril-daemon
+
+#Raydium touch setting
+#service rm_ts_service    /system/bin/rm_ts_server
+#    class main
+
+service p2p_supplicant /system/bin/wpa_supplicant \
+    -Dnl80211 -iwlan0 -puse_p2p_group_interface=1 -e/data/misc/wifi/entropy.bin -c/data/misc/wifi/wpa_supplicant.conf \
+#   we will start as root and wpa_supplicant will switch to user wifi
+#   after setting up the capabilities required for WEXT
+#   user wifi
+#   group wifi inet keystore
+    class main
+    socket wpa_wlan0 dgram 660 wifi wifi
+    disabled
+    oneshot
+
+service wpa_suppl_nl /system/bin/wpa_supplicant \
+    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -N \
+    -ip2p0 -Dnl80211 -c /data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -puse_p2p_group_interface=1
+#   we will start as root and wpa_supplicant will switch to user wifi
+#   after setting up the capabilities required for WEXT
+#   user wifi
+#   group wifi inet keystore
+    class main
+    socket wpa_wlan0 dgram 660 wifi wifi
+    disabled
+    oneshot
+
+service wpa_suppl_wext /system/bin/wpa_supplicant \
+    -Dwext -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf
+#   we will start as root and wpa_supplicant will switch to user wifi
+#   after setting up the capabilities required for WEXT
+#   user wifi
+#   group wifi inet keystore
+    class main
+    socket wpa_wlan0 dgram 660 wifi wifi
+    disabled
+    oneshot
+
+on property:ro.sf.lcd_density=*
+    start wifiloader
+
+# default chipset (currently bcm4330)
+on property:wifi.commchip_id=0
+    insmod /system/lib/modules/bcmdhd.ko
+    setprop wifi.supplicant wpa_suppl_nl
+
+# bcm4329 chipset
+on property:wifi.commchip_id=2
+    setprop wifi.driver.name bcm4329
+    setprop wifi.driver.path /system/lib/modules/bcm4329.ko
+    setprop wifi.firmware.path.ap /system/vendor/firmware/fw_bcm4329_apsta.bin
+    setprop wifi.driver.arg "iface_name=wlan0"
+    setprop wifi.supplicant wpa_suppl_wext
+    setprop wifi.use_hostapd 0
+
+# bcm4330 chipset
+on property:wifi.commchip_id=3
+    insmod /system/lib/modules/bcmdhd.ko
+    setprop wifi.supplicant wpa_suppl_nl
+
+# marvell sd8797 chipset
+on property:wifi.commchip_id=4
+    insmod /system/lib/modules/mlan.ko
+    insmod /system/lib/modules/sd8xxx.ko "drv_mode=1 cfg80211_wext=12 fw_name=sd8797_uapsta.bin"
+    setprop wifi.supplicant wpa_suppl_nl
+
+# bcm4334 chipset
+on property:wifi.commchip_id=6
+    setprop wifi.firmware.path.ap /system/vendor/firmware/bcm4334/fw_bcmdhd_apsta.bin
+    insmod /system/lib/modules/bcm43xx.ko
+    setprop wifi.supplicant wpa_suppl_nl
+
+# End of testmode patches.

@@ -21,6 +21,13 @@ $(call inherit-product-if-exists, vendor/aoc/g3smnt/g3smnt-vendor.mk)
 # Path to overlay files
 DEVICE_PACKAGE_OVERLAYS += device/aoc/g3smnt/overlay
 
+# Files needed for boot/recovery image
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/ramdisk/init.cardhu.rc:root/init.cardhu.rc \
+    $(LOCAL_PATH)/ramdisk/ueventd.cardhu.rc:root/ueventd.cardhu.rc \
+    $(LOCAL_PATH)/ramdisk/init.cardhu.usb.rc:root/init.cardhu.usb.rc \
+    $(LOCAL_PATH)/ramdisk/fstab.cardhu:root/fstab.cardhu \
+
 # Build characteristics setting
 PRODUCT_CHARACTERISTICS := tablet
 PRODUCT_AAPT_CONFIG := ldpi normal hdpi
