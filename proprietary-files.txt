@@ -1,6 +1,7 @@
 bin/btmacwriter
 bin/icera-switcherd
 bin/nvcpud
+bin/rild
 bin/tf_daemon
 bin/wifi_loader.sh
 etc/asound.conf
