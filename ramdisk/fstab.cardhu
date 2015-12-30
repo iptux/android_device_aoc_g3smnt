@@ -16,4 +16,3 @@
 # Recovery only
 /dev/block/mmcblk0p1    /recovery    emmc defaults recoveryonly
 /dev/block/mmcblk0p2    /boot        emmc defaults recoveryonly
-/dev/block/mmcblk0p7    /misc        emmc defaults recoveryonly
