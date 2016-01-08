@@ -54,6 +54,8 @@ TARGET_PREBUILT_KERNEL := device/aoc/g3smnt/prebuilt/kernel
 # EGL settings
 BOARD_EGL_CFG := device/aoc/g3smnt/configs/egl.cfg
 USE_OPENGL_RENDERER := true
+BOARD_HAVE_PIXEL_FORMAT_INFO := true
+TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 
 # Misc display settings
 BOARD_USE_SKIA_LCDTEXT := true
