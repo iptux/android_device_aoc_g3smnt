@@ -5,7 +5,6 @@ bin/rild
 bin/tf_daemon
 bin/wifi_loader.sh
 etc/asound.conf
-etc/dbus.conf
 etc/enctune.conf
 etc/firmware/bcm4329.hcd
 etc/firmware/bcm4330.hcd
