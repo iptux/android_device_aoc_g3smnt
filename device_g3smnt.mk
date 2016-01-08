@@ -31,6 +31,8 @@ PRODUCT_COPY_FILES += \
 # Prebuilt configuration files
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf \
+    $(LOCAL_PATH)/configs/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
+    $(LOCAL_PATH)/configs/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
 
 # Input device configuration files
 PRODUCT_COPY_FILES += \
