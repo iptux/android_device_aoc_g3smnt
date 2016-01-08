@@ -20,6 +20,9 @@ BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := false
 BOARD_USES_TINY_AUDIO_HW := false
 
+# Camera options
+COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
+
 # inherit from the proprietary version
 -include vendor/aoc/g3smnt/BoardConfigVendor.mk
 
