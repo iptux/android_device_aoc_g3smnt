@@ -73,6 +73,7 @@ PRODUCT_PACKAGES += \
     audio.a2dp.default \
     libaudioutils \
     libinvensense_mpl \
+    NvCPLSvc \
 
 # Infinity specific properties
 PRODUCT_PROPERTY_OVERRIDES := \
