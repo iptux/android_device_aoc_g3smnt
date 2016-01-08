@@ -2,7 +2,7 @@
 # system.prop for g3smnt
 #
 ro.carrier=wifi-only
-ro.sf.lcd_density=120
+ro.sf.lcd_density=160
 tf.enable=y
 
 # don't preload OpenGL in Zygote, the Tegra drivers do not like it
