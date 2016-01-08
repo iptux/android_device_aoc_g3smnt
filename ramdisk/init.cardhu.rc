@@ -31,11 +31,6 @@ on init
 on fs
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
     setprop ro.crypto.umount_sd false
-    # PLEASE DO NOT REMOVE NVSI SYMLINK! IF CHANGES ARE NEEDED PLEASE ENSURE THAT NVSI SYMLINK IS ALWAYS CREATED.
-    # Mount system to allow NVSI symlink
-    mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/APP /system rw
-    # Create NVSI filter symlink
-    symlink /data/data/com.nvidia.NvCPLSvc/files/com.nvidia.nvsiutilv1.xml /system/etc/permissions/com.nvidia.nvsiutilv1.xml
     mount_all /fstab.cardhu
 
 on post-fs-data
