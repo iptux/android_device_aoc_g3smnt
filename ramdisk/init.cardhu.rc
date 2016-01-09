@@ -215,14 +215,6 @@ service btmacwriter /system/bin/btmacwriter
     group bluetooth net_bt_admin
     oneshot
 
-# wifiloader - set the wifi commchip_id accordingly
-service wifiloader /system/bin/wifi_loader.sh
-    class main
-    user root
-    group root
-    oneshot
-    disabled
-
 # Prepare TF service
 service tf_daemon /system/bin/tf_daemon -storageDir /data/tf -d
     disabled
@@ -302,67 +294,5 @@ service p2p_supplicant /system/bin/wpa_supplicant \
     socket wpa_wlan0 dgram 660 wifi wifi
     disabled
     oneshot
-
-service wpa_suppl_nl /system/bin/wpa_supplicant \
-    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
-    -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-    -O/data/misc/wifi/sockets \
-    -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
-#   we will start as root and wpa_supplicant will switch to user wifi
-#   after setting up the capabilities required for WEXT
-#   user wifi
-#   group wifi inet keystore
-    class main
-    socket wpa_wlan0 dgram 660 wifi wifi
-    disabled
-    oneshot
-
-service wpa_suppl_wext /system/bin/wpa_supplicant \
-    -Dwext -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf \
-    -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-    -O/data/misc/wifi/sockets \
-    -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
-#   we will start as root and wpa_supplicant will switch to user wifi
-#   after setting up the capabilities required for WEXT
-#   user wifi
-#   group wifi inet keystore
-    class main
-    socket wpa_wlan0 dgram 660 wifi wifi
-    disabled
-    oneshot
-
-on property:ro.sf.lcd_density=*
-    start wifiloader
-
-# default chipset (currently bcm4330)
-on property:wifi.commchip_id=0
-    insmod /system/lib/modules/bcmdhd.ko
-    setprop wifi.supplicant wpa_suppl_nl
-
-# bcm4329 chipset
-on property:wifi.commchip_id=2
-    setprop wifi.driver.name bcm4329
-    setprop wifi.driver.path /system/lib/modules/bcm4329.ko
-    setprop wifi.firmware.path.ap /system/vendor/firmware/fw_bcm4329_apsta.bin
-    setprop wifi.driver.arg "iface_name=wlan0"
-    setprop wifi.supplicant wpa_suppl_wext
-    setprop wifi.use_hostapd 0
-
-# bcm4330 chipset
-on property:wifi.commchip_id=3
-    insmod /system/lib/modules/bcmdhd.ko
-    setprop wifi.supplicant wpa_suppl_nl
-
-# marvell sd8797 chipset
-on property:wifi.commchip_id=4
-    insmod /system/lib/modules/mlan.ko
-    insmod /system/lib/modules/sd8xxx.ko "drv_mode=1 cfg80211_wext=12 fw_name=sd8797_uapsta.bin"
-    setprop wifi.supplicant wpa_suppl_nl
-
-# bcm4334 chipset
-on property:wifi.commchip_id=6
-    setprop wifi.firmware.path.ap /system/vendor/firmware/bcm4334/fw_bcmdhd_apsta.bin
-    insmod /system/lib/modules/bcm43xx.ko
-    setprop wifi.supplicant wpa_suppl_nl
 
 # End of testmode patches.
