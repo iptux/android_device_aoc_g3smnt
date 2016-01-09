@@ -134,8 +134,6 @@ on boot
     write /data/misc/wminput/connected 0
     chmod 0666 /data/misc/wminput/connected
 
-# Load WiFi driver
-    insmod /system/lib/modules/cfg80211.ko
 
 # BB mapping symbolic name to the logging ttyACM port
     symlink /dev/ttyACM2 /dev/log_modem
@@ -151,7 +149,7 @@ service dhcpcd_wlan0 /system/bin/dhcpcd -aABKL
     disabled
     oneshot
 
-service dhcpcd_p2p /system/bin/dhcpcd -aABKL
+service dhcpcd_p2p0 /system/bin/dhcpcd -aABKL
     class main
     disabled
     oneshot
@@ -171,7 +169,7 @@ service iprenew_wlan0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
-service iprenew_p2p /system/bin/dhcpcd -n
+service iprenew_p2p0 /system/bin/dhcpcd -n
     class main
     disabled
     oneshot
@@ -279,7 +277,7 @@ on property:ril.testmode=0
 #    class main
 
 service p2p_supplicant /system/bin/wpa_supplicant \
-    -iwlan0 -Dnl80211 -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf \
+    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf \
     -O/data/misc/wifi/sockets -N \
     -ip2p0 -Dnl80211 -c /data/misc/wifi/p2p_supplicant.conf \
