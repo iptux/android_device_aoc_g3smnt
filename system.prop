@@ -5,5 +5,14 @@ ro.carrier=wifi-only
 ro.sf.lcd_density=160
 tf.enable=y
 
+# Disable un-supported Android feature
+hw.nopm=true
+hw.nobattery=true
+hw.istablet=true
+hw.novibrate=true
+hw.hasethernet=true
+ro.hw.ethernet.onboard=true
+gps.enable=false
+
 # don't preload OpenGL in Zygote, the Tegra drivers do not like it
 ro.zygote.disable_gl_preload=true
