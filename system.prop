@@ -23,3 +23,6 @@ media.tegra.hw.dtsdec=0
 media.tegra.out.channel.map=
 persist.tegra.nvmmlite=1
 ro.streaming.video.drs=true
+
+# misc
+ro.bt.bdaddr_path=/data/misc/bluetooth/bdaddr
