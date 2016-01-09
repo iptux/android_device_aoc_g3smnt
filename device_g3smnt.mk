@@ -78,6 +78,14 @@ PRODUCT_PACKAGES += \
     Firewall \
     NvCPLSvc \
 
+# Wi-Fi files
+PRODUCT_PACKAGES += \
+    hostapd \
+    dhcpcd.conf \
+    wpa_supplicant \
+    wpa_supplicant.conf \
+    libnetcmdiface \
+
 # Infinity specific properties
 PRODUCT_PROPERTY_OVERRIDES := \
     wifi.interface=wlan0 \

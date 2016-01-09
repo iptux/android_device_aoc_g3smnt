@@ -14,7 +14,6 @@ etc/firmware/nvavp_vid_ucode_alt.bin
 etc/nvaudio_conf.xml
 etc/nvcamera.conf
 etc/wifi/bcmdhd.cal
-etc/wifi/wpa_supplicant.conf
 lib/egl/libEGL_tegra_impl.so
 lib/egl/libEGL_tegra.so
 lib/egl/libGLESv1_CM_tegra_impl.so
