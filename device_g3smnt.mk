@@ -84,6 +84,11 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.opengles.version=131072 \
     persist.sys.usb.config=mtp,adb
 
+# media files
+PRODUCT_COPY_FILES += \
+    device/aoc/g3smnt/configs/media_codecs.xml:system/etc/media_codecs.xml \
+    device/aoc/g3smnt/configs/media_profiles.xml:system/etc/media_profiles.xml
+
 # Inherit tablet dalvik settings
 $(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
 
