@@ -76,6 +76,7 @@ PRODUCT_PACKAGES += \
     audio.a2dp.default \
     libaudioutils \
     libinvensense_mpl \
+    Firewall \
     NvCPLSvc \
 
 # Infinity specific properties
