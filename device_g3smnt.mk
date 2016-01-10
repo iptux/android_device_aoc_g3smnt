@@ -84,7 +84,6 @@ PRODUCT_PACKAGES += \
     dhcpcd.conf \
     wpa_supplicant \
     wpa_supplicant.conf \
-    libnetcmdiface \
 
 # Infinity specific properties
 PRODUCT_PROPERTY_OVERRIDES := \
