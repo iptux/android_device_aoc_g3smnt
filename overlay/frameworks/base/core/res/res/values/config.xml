@@ -120,11 +120,6 @@
     <!-- If this is true, the screen will fade off. -->
     <bool name="config_animateScreenLights">false</bool>
 
-    <!-- Maximum wallpaper width for devices with very high-res screen (1920x1200)
-         the wallpaper width suggestion by the launcher may be too large for
-         the GPU to handle. -->
-    <integer name="config_wallpaperMaxWidth">2048</integer>
-
     <!-- Whether a software navigation bar should be shown. NOTE: in the future this may be
          autodetected from the Configuration. -->
     <bool name="config_showNavigationBar">true</bool>
