@@ -9,9 +9,9 @@
 /dev/block/platform/sdhci-tegra.3/by-name/UDA /data   ext4 noatime,noauto_da_alloc,nosuid,nodev,nodiratime,barrier=0,errors=panic wait,encryptable=/dev/block/platform/sdhci-tegra.3/by-name/MDA
 
 # VOLD mount points
-/devices/platform/sdhci-tegra.0/mmc_host/mmc2 /storage/sdcard1  auto defaults voldmanaged=sdcard1:auto
-/devices/platform/tegra-ehci.2/usb2/2-1/2-1.1 /storage/usbdisk0 auto defaults voldmanaged=usbdisk0:auto
-/devices/platform/tegra-ehci.2/usb2/2-1/2-1.2 /storage/usbdisk1 auto defaults voldmanaged=usbdisk1:auto
+/devices/platform/sdhci-tegra.0/mmc_host/mmc2 auto auto defaults voldmanaged=sdcard1:auto
+/devices/platform/tegra-ehci.2/usb2/2-1/2-1.1 auto auto defaults voldmanaged=usbdisk0:auto
+/devices/platform/tegra-ehci.2/usb2/2-1/2-1.2 auto auto defaults voldmanaged=usbdisk1:auto
 
 # Recovery only
 /dev/block/mmcblk0p1    /boot        emmc defaults recoveryonly
