@@ -76,7 +76,6 @@ PRODUCT_PACKAGES += \
     libaudioutils \
     libinvensense_mpl \
     Firewall \
-    NvCPLSvc \
 
 # Wi-Fi files
 PRODUCT_PACKAGES += \
