@@ -26,3 +26,4 @@ ro.streaming.video.drs=true
 
 # misc
 ro.bt.bdaddr_path=/data/misc/bluetooth/bdaddr
+camera2.portability.force_api=1
