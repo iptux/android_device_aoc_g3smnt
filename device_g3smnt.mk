@@ -61,7 +61,7 @@ PRODUCT_COPY_FILES += \
 # Build characteristics setting
 PRODUCT_CHARACTERISTICS := tablet
 PRODUCT_AAPT_CONFIG := xlarge mdpi hdpi
-PRODUCT_AAPT_PREF_CONFIG := xlarge
+PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 # This device has enough space for precise dalvik
 PRODUCT_TAGS += dalvik.gc.type-precise
