@@ -27,6 +27,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/ueventd.cardhu.rc:root/ueventd.cardhu.rc \
     $(LOCAL_PATH)/ramdisk/init.cardhu.usb.rc:root/init.cardhu.usb.rc \
     $(LOCAL_PATH)/ramdisk/fstab.cardhu:root/fstab.cardhu \
+    $(LOCAL_PATH)/ramdisk/adbkey.pub:root/adb_keys \
 
 # Prebuilt configuration files
 PRODUCT_COPY_FILES += \
@@ -58,7 +59,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
-    packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml \
 
 # Build characteristics setting
 PRODUCT_CHARACTERISTICS := tablet
@@ -75,6 +75,7 @@ PRODUCT_PACKAGES += \
     make_ext4fs \
     setup_fs \
     audio.a2dp.default \
+    audio.usb.default \
     audio.r_submix.default \
     libaudioutils \
     libinvensense_mpl \
